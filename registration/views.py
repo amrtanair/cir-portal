@@ -13,7 +13,7 @@ from registration.forms import *
 from django.views.generic import ListView
 from django.http import Http404
 from django.http import HttpResponse
-import simplejson as json
+import json as simplejson
 import pyexcel.ext.xls   # pip install pyexcel-xls
 import pyexcel.ext.xlsx # pip install pyexcel-xlsx
 import pyexcel.ext.ods # pip install pyexcel-ods

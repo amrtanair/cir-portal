@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
-    'mail_templated'
+    'mail_templated',
+    'cirplacements'
 )
 
 MIDDLEWARE_CLASSES = (
