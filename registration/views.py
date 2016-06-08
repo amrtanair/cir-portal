@@ -59,6 +59,7 @@ class UserRegistrationView(AnonymousRequiredMixin, FormView):
     success_url = '/register/user/success/'
 
     def form_valid(self, form):
+        form.instance.aums_id = form.instance.aums_id.lower()
         form.save()
         return FormView.form_valid(self, form)
 
@@ -85,7 +86,7 @@ def handle_student_upload(request):
             studentFields = filehandle.get_array()[1:]
             counter = 0
             for student in studentFields:
-                Student.Objects.create_student_fromfile(student[0],student[1],student[2],student[3],student[4], student[5],
+                Student.Objects.create_student_fromfile(student[0].lower(),student[1],student[2],student[3],student[4], student[5],
                                                         student[6],student[7],student[8],student[9],student[10],student[11],student[12],student[13],student[14])
                 counter = counter+1
 
