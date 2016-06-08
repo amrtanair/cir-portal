@@ -9,6 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
 from braces.views import LoginRequiredMixin, AnonymousRequiredMixin
 from registration.models import *
+from registration.models import Student
 from registration.forms import *
 from django.views.generic import ListView
 from django.http import Http404
@@ -110,7 +111,7 @@ class StudentListUpdateView(LoginRequiredMixin, UpdateView):
     success_url = '/register/cirstaff/success/'
 
     def get_object(self, queryset=None):
-        obj = Student.Objects.get(stud_id=self.kwargs['stud_id'])
+        obj = Student.Objects.get(aums_id=self.kwargs['aums_id'])
         if obj:
             return obj
         else:
