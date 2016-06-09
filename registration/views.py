@@ -15,9 +15,9 @@ from django.views.generic import ListView
 from django.http import Http404
 from django.http import HttpResponse
 import json as simplejson
-import pyexcel.ext.xls   # pip install pyexcel-xls
-import pyexcel.ext.xlsx # pip install pyexcel-xlsx
-import pyexcel.ext.ods # pip install pyexcel-ods
+import pyexcel.ext.xls  # pip install pyexcel-xls
+import pyexcel.ext.xlsx  # pip install pyexcel-xlsx
+import pyexcel.ext.ods  # pip install pyexcel-ods
 import django_excel as excel
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -25,7 +25,7 @@ from django.shortcuts import render_to_response
 from django.core.mail import EmailMessage
 from mail_templated import send_mail
 import uuid
-from ccavutil import encrypt,decrypt
+from ccavutil import encrypt, decrypt
 from string import Template
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest
@@ -37,20 +37,24 @@ class CurrentUserMixin(object):
     model = User
 
     def get_object(self, *args, **kwargs):
-        try: obj = super(CurrentUserMixin, self).get_object(*args, **kwargs)
-        except AttributeError: obj = self.request.user
+        try:
+            obj = super(CurrentUserMixin, self).get_object(*args, **kwargs)
+        except AttributeError:
+            obj = self.request.user
         return obj
 
 
 # Create your views here
 def anonymous_required(func):
     def as_view(request, *args, **kwargs):
-        redirect_to = kwargs.get('next', settings.LOGIN_REDIRECT_URL )
+        redirect_to = kwargs.get('next', settings.LOGIN_REDIRECT_URL)
         if request.user.is_authenticated():
             return redirect(redirect_to)
         response = func(request, *args, **kwargs)
         return response
+
     return as_view
+
 
 class UserRegistrationView(AnonymousRequiredMixin, FormView):
     template_name = "register/user/register_user.html"
@@ -63,7 +67,8 @@ class UserRegistrationView(AnonymousRequiredMixin, FormView):
         form.save()
         return FormView.form_valid(self, form)
 
-class StudentRegistrationView( LoginRequiredMixin, FormView):
+
+class StudentRegistrationView(LoginRequiredMixin, FormView):
     template_name = "register/cirstaff/register_student.html"
     form_class = StudentRegistrationForm
     success_url = '/register/cirstaff/success'
@@ -72,7 +77,8 @@ class StudentRegistrationView( LoginRequiredMixin, FormView):
         form.save()
         return FormView.form_valid(self, form)
 
-class StudentBulkUploadView( LoginRequiredMixin, FormView):
+
+class StudentBulkUploadView(LoginRequiredMixin, FormView):
     template_name = "register/cirstaff/register_bulk_student.html"
     form_class = UploadFileForm
     success_url = '/register/student/success/'
@@ -86,19 +92,21 @@ def handle_student_upload(request):
             studentFields = filehandle.get_array()[1:]
             counter = 0
             for student in studentFields:
-                Student.Objects.create_student_fromfile(student[0].lower(),student[1],student[2],student[3],student[4], student[5],
-                                                        student[6],student[7],student[8],student[9],student[10],student[11],student[12],student[13],student[14])
-                counter = counter+1
+                Student.Objects.create_student_fromfile(student[0].lower(), student[1], student[2], student[3],
+                                                        student[4], student[5],
+                                                        student[6], student[7], student[8], student[9], student[10],
+                                                        student[11], student[12], student[13], student[14])
+                counter = counter + 1
 
-            return render_to_response('register/cirstaff/register_bulk_student_list.html',{'counter':counter },
-                                       context_instance=RequestContext(request))
-        else :
-             return redirect(request.META['HTTP_REFERER'])
+            return render_to_response('register/cirstaff/register_bulk_student_list.html', {'counter': counter},
+                                      context_instance=RequestContext(request))
+        else:
+            return redirect(request.META['HTTP_REFERER'])
     else:
-         return HttpResponseBadRequest()
+        return HttpResponseBadRequest()
 
 
-class StudentListView(LoginRequiredMixin,ListView):
+class StudentListView(LoginRequiredMixin, ListView):
     template_name = 'register/cirstaff/list.html'
 
     def get_queryset(self):
@@ -117,3 +125,18 @@ class StudentListUpdateView(LoginRequiredMixin, UpdateView):
             return obj
         else:
             raise Http404("That doesnt exist.")
+
+
+class StudentFilterExternalView(ListView):
+    template_name = 'register/cirstaff/filter_external_list.html'
+
+    def get_queryset(self):
+        cgpa = self.request.GET.get('cgpa')
+        arrears = self.request.GET.get('arrear')
+        branch = self.request.GET.get('branch')
+        tenth = self.request.GET.get('tenth')
+        twelth = self.request.GET.get('twelth')
+
+        print (cgpa + arrears + branch + tenth + twelth)
+        return Student.Objects.filter(cgpa__gte = cgpa, curr_arrears=arrears, branch=branch, tenth_mark__gte = tenth,
+                                      twelth_mark__gte = twelth)
