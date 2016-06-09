@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^user/$', UserRegistrationView.as_view(), name='register_user'),
     url(r'^user/success/', TemplateView.as_view(template_name='register/user/success.html'),
         name='user_registration_success'),
+<<<<<<< HEAD
     url(r'^portal/student', TemplateView.as_view(template_name='register/manage_students.html'),
         name="manage_students"),
     url(r'^portal/staff', TemplateView.as_view(template_name='register/manage_staff.html'), name="manage_staff"),
@@ -27,3 +28,17 @@ urlpatterns = [
         name="filter_external"),
     url(r'^studnet/filter/external/$', StudentFilterExternalView.as_view(), name="filter_external_list")
 ]
+=======
+     url(r'^portal/student', TemplateView.as_view(template_name='register/manage_students.html'),name="manage_students"),
+     url(r'^portal/staff', TemplateView.as_view(template_name='register/manage_staff.html'),name="manage_staff"),
+     url(r'^preferences', TemplateView.as_view(template_name='preferences.html'),name="preferences"),
+     url(r'^sign-in', TemplateView.as_view(template_name='sign-in.html'),name="sign-in"),
+     url(r'^index', TemplateView.as_view(template_name='index.html'),name="index"),
+     url(r'^student/$', StudentRegistrationView.as_view(), name='register_student'),
+     url(r'^cirstaff/success/', TemplateView.as_view(template_name='register/cirstaff/success.html'), name='success'),
+     url(r'^bulk/$', StudentBulkUploadView.as_view(), name='register_student_bulk'),
+     url(r'^bulk/handle/$', views.handle_student_upload, name='upload_students'),
+     url(r'^list/$', StudentListView.as_view(), name='list'),
+     url(r'^profile/edit/(?P<aums_id>[\w|\W]+)/$', StudentListUpdateView.as_view(), name='student_profile_update'),
+    ]
+>>>>>>> 5c6f4a044e2110a3fc63edafcdfb29ccf9647d33

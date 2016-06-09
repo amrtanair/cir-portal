@@ -62,14 +62,18 @@ class UserRegistrationForm(ModelForm):
         if commit: user.save()
         return user
 
+<<<<<<< HEAD
 student_fields = ['aums_id','name','curr_course','branch','tenth_mark','twelth_mark',
+=======
+student_fields = [ 'name','curr_course','branch','tenth_mark','twelth_mark',
+>>>>>>> 5c6f4a044e2110a3fc63edafcdfb29ccf9647d33
                   's1','s2','s3','s4','s6','cgpa','curr_arrears','hist_arrears']
 
 class StudentRegistrationForm(ModelForm):
 
     class Meta:
         model = Student
-        fields = student_fields
+        fields = ['aums_id'] + student_fields
 
 
 

@@ -68,12 +68,18 @@ class UserRegistrationView(AnonymousRequiredMixin, FormView):
         return FormView.form_valid(self, form)
 
 
+<<<<<<< HEAD
 class StudentRegistrationView(LoginRequiredMixin, FormView):
+=======
+
+class StudentRegistrationView( LoginRequiredMixin, FormView):
+>>>>>>> 5c6f4a044e2110a3fc63edafcdfb29ccf9647d33
     template_name = "register/cirstaff/register_student.html"
     form_class = StudentRegistrationForm
     success_url = '/register/cirstaff/success'
 
     def form_valid(self, form):
+        form.instance.aums_id = form.instance.aums_id.lower()
         form.save()
         return FormView.form_valid(self, form)
 
@@ -92,6 +98,7 @@ def handle_student_upload(request):
             studentFields = filehandle.get_array()[1:]
             counter = 0
             for student in studentFields:
+<<<<<<< HEAD
                 Student.Objects.create_student_fromfile(student[0].lower(), student[1], student[2], student[3],
                                                         student[4], student[5],
                                                         student[6], student[7], student[8], student[9], student[10],
@@ -102,6 +109,16 @@ def handle_student_upload(request):
                                       context_instance=RequestContext(request))
         else:
             return redirect(request.META['HTTP_REFERER'])
+=======
+                Student.Objects.create_student_fromfile(student[0].lower(),student[1],student[2],student[3],student[4], student[5],
+                                                        student[6],student[7],student[8],student[9],student[10],student[11],student[12],student[13],student[14])
+                counter = counter+1
+
+            return render_to_response('register/cirstaff/register_bulk_student_list.html',{'counter':counter },
+                                       context_instance=RequestContext(request))
+        else :
+             return redirect(request.META['HTTP_REFERER'])
+>>>>>>> 5c6f4a044e2110a3fc63edafcdfb29ccf9647d33
     else:
         return HttpResponseBadRequest()
 
@@ -113,9 +130,9 @@ class StudentListView(LoginRequiredMixin, ListView):
         return Student.Objects.all()
 
 
-class StudentListUpdateView(LoginRequiredMixin, UpdateView):
+class StudentListUpdateView(UpdateView):
     model = Student
-    form_class = StudentRegistrationForm
+    fields = student_fields
     template_name_suffix = '_update_form'
     success_url = '/register/cirstaff/success/'
 

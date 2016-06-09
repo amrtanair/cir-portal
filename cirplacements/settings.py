@@ -85,11 +85,6 @@ AUTHENTICATION_BACKENDS = (
 
 
 
-
-
-
-
-
 WSGI_APPLICATION = 'cirplacements.wsgi.application'
 
 
